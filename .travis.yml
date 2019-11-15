@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+  - stable
+  - node
+cache:
+  directories:
+  - "node_modules"
+install:
+  - npm install
+services:
+ - postgresql
+env:
+  global:
+  - NODE_ENV=test
+script:
+ - npm run test
+notification:
+ - email: dadsclement@gmail.com
+before_script:
+  - psql -c 'CREATE DATABASE "teamwork";' -U postgres
+  - psql -c "CREATE USER me WITH PASSWORD '1995';" -U postgres
