@@ -111,7 +111,7 @@ exports.signin = async (req, res) => {
       })
       .catch((err) => {
         console.log('i am here');
-        res.staus(500).json({
+        res.status(500).json({
           error: err
         });
       });
