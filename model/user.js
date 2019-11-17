@@ -23,7 +23,7 @@ class UserModel {
       const result = await pool.query(getUserQuery, values);
       return result;
     } catch (error) {
-      throw error;
+      return error;
     }
   }
 }
