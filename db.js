@@ -22,28 +22,45 @@ const createUsersTables = () => {
       console.log(err);
     });
 };
-const createGifTables = () => {
+const createGifsTables = () => {
   const queryText = `CREATE TABLE IF NOT EXISTS
-  gifs(
-    gifId UUID PRIMARY KEY,
-    title VARCHAR(128) NOT NULL,
-    imageUrl VARCHAR(225) NOT NULL,
-    flaggedInvalid INTEGER DEFAULT 0,
-    claps INTEGER DEFAULT 0,
-    dateCreated TIMESTAMP DEFAULT current_timestamp,
-    dateUpdated TIMESTAMP DEFAULT current_timestamp,
-    userId SERIAL REFERENCES users(id)
- 
-  )`;
+    gifs(
+      gifId SERIAL PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      imageUrl VARCHAR(255) NOT NULL,
+      public_id VARCHAR(255) NOT NULL,
+      flaggedInvalid INTEGER DEFAULT 0,
+      claps INTEGER DEFAULT 0,
+      dateCreated TIMESTAMP DEFAULT current_timestamp,
+      dataUpdated TIMESTAMP DEFAULT current_timestamp,
+      userId SERIAL REFERENCES users(id)
+      )`;
   pool.query(queryText)
-  .then((res) => {
-    console.log(res);
-    pool.end();
-  }).catch((err) => {
-    console.log(err);
-  });
-
-}
-module.exports = { createUsersTables, createGifTables };
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    }).catch((err) => {
+      console.log(err);
+    });
+};
+const createArticlesTables = () => {
+  const queryText = `CREATE TABLE IF NOT EXISTS
+    articles(
+      articleId SERIAL PRIMARY KEY,
+      title VARCHAR(255) NOT NULL,
+      content VARCHAR(100000) NOT NULL,
+      dateCreated TIMESTAMP DEFAULT current_timestamp,
+      dataUpdated TIMESTAMP DEFAULT current_timestamp,
+      userId SERIAL REFERENCES users(id)
+    )`;
+  pool.query(queryText)
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    }).catch((err) => {
+      console.log(err);
+    });
+};
+module.exports = { createUsersTables, createGifsTables, createArticlesTables};
 
 require('make-runnable');

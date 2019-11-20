@@ -30,12 +30,12 @@ exports.signup = async (req, res) => {
   }
   const hash = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8));
   const newUser = {
-    isAdmin: false,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
+    isadmin: false,
+    firstname: req.body.firstName,
+    lastname: req.body.lastName,
     email: req.body.email,
     gender: req.body.gender,
-    jobRole: req.body.jobRole,
+    jobrole: req.body.jobRole,
     department: req.body.department,
     address: req.body.address,
     password: hash,
@@ -86,14 +86,14 @@ exports.signin = async (req, res) => {
         bcrypt.compare(req.body.password, user.rows[0].password, (err, result) => {
           if (err) {
             return res.status(401).json({
-              message: 'incoreect password'
+              message: 'incorrect password'
             });
           }
           if (result) {
             const token = jwt.sign({
-              email: user.rows[0].eamil,
-              password: user.rows[0].id,
-            }, process.env.secretKey, { expiresIn: '1hr' });
+              email: user.rows[0].email,
+              userid: user.rows[0].id,
+            }, process.env.secretKey, { expiresIn: '24hr' });
             return res.status(201).json({
               message: 'login successful',
               token,
@@ -109,10 +109,10 @@ exports.signin = async (req, res) => {
           });
         });
       })
-      .catch((err) => {
+      .catch((error) => {
         console.log('i am here');
         res.status(500).json({
-          error: err
+          error: error
         });
       });
   } catch (err) {
