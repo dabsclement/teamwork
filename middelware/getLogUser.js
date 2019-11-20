@@ -5,5 +5,5 @@ module.exports = async (req) => {
   const token = req.headers.authorization.split(' ')[1];
   const decodedToken = jwt.verify(token, process.env.secretKey);
   console.log(decodedToken);
-  return decodedToken.userId;
+  return decodedToken.userid;
 };

@@ -3,6 +3,7 @@ const gifController = require('../controllers/gifController');
 const upload = require('../middelware/multerMid');
 
 
+
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
@@ -11,7 +12,7 @@ router.get('/', (req, res, next) => {
     })
 })
 
-router.post('/gifs', upload, gifController.addGif);
+router.post('/gifs', gifController.addGif);
 
 
 module.exports = router;

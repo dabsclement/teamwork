@@ -3,16 +3,16 @@ const { check, validationResult } = require('express-validator');
 require('dotenv').config();
 const gifModel = require('../model/gif');
 const getLogUser = require('../middelware/getLogUser');
-
+const cloudStorage = require('../middelware/cloud-config');
 
 exports.addGif = async (req, res) => {
-  const file = req.file;
-//   console.log(file);
-//   console.log(req.body.title);
+  const file = req.files.image;
+  // console.log(file);
+  // console.log(req.body.title);
 
   const dataToValidate = [
     check(req.body.title).isLength({ min: 3 }),
-    check(file.originalname).isLength({ min: 3 }).isMimeType('image/gif'),
+    check(file.name).isLength({ min: 3 }).isMimeType('image/gif'),
 
   ];
   const errors = validationResult(dataToValidate);
@@ -24,18 +24,27 @@ exports.addGif = async (req, res) => {
       message: 'All data pass validation test'
     });
   }
+  if (file.mimetype !== 'image/gif') {
+    return res.status(400).json({
+      message: 'please we only accept gif'
+    });
+  }
   const userid = await getLogUser(req);
-  console.log(userid);
+  console.log(userid)
+  const image = await cloudStorage.uploader.upload(file.tempFilePath, (error, result) => {
+    if (error) {
+      res.status(400).json({ message: `${error} occured` });
+    }
+    return result;
+  });
   const newGif = {
     title: req.body.title,
-    imageurl: file.path,
-    public_id: file.path,
+    imageurl: image.secure_url,
+    public_id: image.public_id,
     userid
   };
   console.log(newGif);
   try {
-    console.log('tring to pull of oooo');
-
     const result = await gifModel.gifPost(newGif);
     console.log('tring to pull of');
     if (result) {
@@ -48,13 +57,13 @@ exports.addGif = async (req, res) => {
           createdOn: result.rows[0].dateCreated,
           title: result.rows[0].title,
           imageurl: result.rows[0].imageurl,
-          public_id: result.rows[0].public_id,
+          public_url: result.rows[0].public_id,
           userid: result.rows[0].userid
         }
       });
     }
   } catch (error) {
-    return res.status(400).json({
+    return res.status(401).json({
       status: 'error',
       message: 'i dey here',
       error

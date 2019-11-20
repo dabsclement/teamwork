@@ -1,5 +1,5 @@
-const cloudinary = require('cloudinary');
-const cloudinaryStorage = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
+// const cloudinaryStorage = require('multer-storage-cloudinary');
 
 
 cloudinary.config({
@@ -9,9 +9,9 @@ cloudinary.config({
 });
 
 
-const cloudStorage = cloudinaryStorage({
-  cloudinary,
-  folder: 'teamwork',
-});
+// const cloudStorage = cloudinaryStorage({
+//   cloudinary,
+//   folder: 'teamwork',
+// });
 
-module.exports = cloudStorage;
+module.exports = cloudinary;
