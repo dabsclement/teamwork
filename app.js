@@ -42,6 +42,7 @@ app.use('/api/v1/auth', userRoutes);
 app.use('/api/v1/gif', gifRoutes);
 app.use('/api/v1/article', articlesRoutes);
 
+
 app.use((req, res, next) => {
   next(createError(404));
 });
