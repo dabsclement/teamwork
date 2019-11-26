@@ -13,5 +13,6 @@ const {checkAdmin, checkEmp } = require('../middelware/authChecker');
 
 router.post('/', checkEmp, articleController.createArticles);
 router.patch('/:articleId', checkEmp, articleController.updateArticles);
+router.delete('/:articleId', articleController.deleteArticles);
 
 module.exports = router;
