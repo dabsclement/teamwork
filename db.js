@@ -79,6 +79,26 @@ const createArticlesTables = () => {
       console.log(err);
     });
 };
-module.exports = {createAdminTables, createUsersTables, createGifsTables, createArticlesTables };
+// employee can comment on article
+const articleComment = () => {
+  const queryText = `CREATE TABLE IF NOT EXISTS
+    articleComment(
+      actionId SERIAL PRIMARY KEY,
+      comment VARCHAR(255) NOT NULL,
+      dateCreated TIMESTAMP DEFAULT current_timestamp,
+      dateUpdated TIMESTAMP DEFAULT current_timestamp,
+      articleid SERIAL REFERENCES articles(articleid),
+      userId SERIAL REFERENCES users(id)
+    )`;
+  pool.query(queryText)
+    .then((res) => {
+      console.log(res);
+      pool.end();
+    }).catch((err) => {
+      console.log(err);
+    });
+};
+
+module.exports = {createAdminTables, createUsersTables, createGifsTables, createArticlesTables, articleComment };
 
 require('make-runnable');
